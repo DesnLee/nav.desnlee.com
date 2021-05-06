@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang = "zh-CN">
+<head>
+    <meta charset = "UTF-8">
+    <meta name = "viewport"
+          content = "width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, viewport-fit=cover">
+    <meta http-equiv = "X-UA-Compatible" content = "ie=edge">
+    <title>Leeの设计/前端导航</title>
+    <link rel = "stylesheet" href = "src/style.css" type = "text/css">
+    <link rel = "shortcut icon" href = "favicon.ico">
+</head>
+<body>
+    <form action = "/index.html" class = "addSiteForm">
+        <ul>
+            <li>
+                <span class="formTitle">添加收藏</span>
+            </li>
+            <li>
+                <span>网站名称：</span>
+                <input name = "siteName" type = "text" placeholder = "请输入要收藏的网站名称" value = "">
+            </li>
+            <li>
+                <span>网站地址：</span>
+                <input name = "siteLink" type = "text" placeholder = "请输入要收藏的网址" value = "">
+            </li>
+            <li>
+                <span>快捷键：</span>
+                <input name = "siteKey" type = "text" placeholder = "请输入键盘快捷键（仅支持单按键）" value = "">
+            </li>
+            <li>
+                <span>图标类型：</span>
+                <div class = "iconsType">
+                    <label for = "link">
+                        <input type = "radio" id = "link" name = "siteIconsType" value = "link" checked>
+                        <span>logo链接</span></label>
+                    <label for = "text">
+                        <input type = "radio" id = "text" name = "siteIconsType" value = "text">
+                        <span>网址首字母</span></label>
+                </div>
+            </li>
+            <li class = "siteIconLink">
+                <span>图标链接：</span>
+                <input name = "siteIcon" type = "text" placeholder = "请输入网站 logo 图片地址" value = "">
+            </li>
+            <li>
+                <button class = "cancelAdd" name = "cancel" type = "button" onclick="closeForm()">取消</button>
+                <button class = "submitAdd" name = "submit" type = "button" onclick="submitForm()">确认添加</button>
+            </li>
+        </ul>
+    </form>
+    <div class="popFailed"></div>
+    <div class="popSuccess">添加网址收藏成功！</div>
+    <div class="mask">
+    </div>
+    <div class = "logo"></div>
+    <header class = "header">
+        <form action = "https://www.google.com/search" class = "searchForm" method = "get">
+            <img id = "searchIcon" class = "searchIcon" src = "src/img/icons/google_search.svg" alt = "">
+            <input name = "q" type = "text">
+            <button type = "submit">搜索</button>
+        </form>
+    </header>
+    <div class = "title"><span class = "star">收藏站点</span><span class = "reset">重置</span></div>
+    <main class = "main">
+        <ul class = "siteList">
+            <li class = "addLi">
+                <a class = "siteItem addSite">
+                    <div class = "siteIcon">
+                        <img src = "src/img/icons/add.svg" alt = "">
+                    </div>
+                    <div class = "siteLink">新增网站</div>
+                </a>
+            </li>
+        </ul>
+    </main>
+    <div class = "desnlee"></div>
+    <footer class = "footer">
+        <p class = "copyright">&copy; Copyright 2021 DesnLee
+        </p>
+        <a target = "_blank" rel = "noopener" href = "http://beian.miit.gov.cn/">浙ICP备2021009729号</a>
+    </footer>
+<!--    <script src = "src/jquery.min.js"></script>-->
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src = "src/main.js"></script>
+</body>
+</html>
