@@ -59,27 +59,44 @@ let render = () => {
 
     hashMap.forEach(site => {
         if (site.siteIconsType === `link`) {
-            const $li = (`<li>
-            <a class="siteItem" href="${site.siteLink}">
-                <span class="tag">Press <strong>${site.siteKey}</strong> to open</span> 
+            const $li = $(`<li>
+            <div class="siteItem">
+                <span class="tag">Press <strong>${site.siteKey}</strong> to open</span>
+                <div class="deleteSite">
+                <img src="src/img/icons/close.svg" alt="">
+                </div>
                 <div class="siteIcon">
                     <img src = "${site.siteIcon}" alt = "">
                 </div>
                 <div class="siteLink">${site.siteName}</div>
-            </a>
-            </li>`)
-            $siteListEnd.before($li)
+            </div>
+            </li>`).insertBefore($siteListEnd)
+            $(`.siteList li`).on(`click`, ()=> {
+                window.open(site.siteLink)
+            }).on(`click`, `.deleteSite` , (e)=> {
+                console.log(`删除被点击了`)
+                e.stopPropagation()
+            })
         } else if (site.siteIconsType === `text`) {
-            const $li = (`<li>
-            <a class="siteItem" href="${site.siteLink}">
+            const $li = $(`<li>
+            <div class="siteItem">
                 <span class="tag">Press <strong>${site.siteKey}</strong> to open</span> 
+                <div class="deleteSite">
+                <img src="src/img/icons/close.svg" alt="">
+                </div>
                 <div class="siteIcon">
                     ${site.siteIcon}
                 </div>
                 <div class="siteLink">${site.siteName}</div>
-            </a>
-            </li>`)
-            $siteListEnd.before($li)
+            </div>
+            </li>`).insertBefore($siteListEnd)
+            $(`.siteList li`).on(`click`, ()=> {
+                window.open(site.siteLink)
+            })
+            $(`.siteList li`).on(`click`, `.deleteSite` , (e)=> {
+                console.log(`删除被点击了`)
+                e.stopPropagation()
+            })
         }
     })
     completeLi()
@@ -163,8 +180,8 @@ let submitForm = () => {
                 hashMap.push({
                     siteName: siteName,
                     siteIconsType: `text`,
-                    siteIcon: siteLink[0],
-                    siteKey: siteKey.toUpperCase(),
+                    siteIcon: siteLink.replace(`https://`, ``).replace(`http://`, ``).replace(`www.`,``)[0],
+                    siteKey: siteKey,
                     siteLink: siteLink
                 })
                 render()
@@ -187,7 +204,7 @@ let submitForm = () => {
                     siteName: siteName,
                     siteIconsType: `link`,
                     siteIcon: siteIcon,
-                    siteKey: siteKey.toUpperCase(),
+                    siteKey: siteKey,
                     siteLink: siteLink
                 })
                 render()
