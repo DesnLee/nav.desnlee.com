@@ -53,11 +53,24 @@ let completeLi = () => {
     }
 }
 
+//给 li 添加点击跳转事件和删除事件，并且阻止删除按钮冒泡
+let addEvent = (element, site, index) => {
+    element.on(`click`, () => {
+        window.open(site.siteLink)
+    }).on(`click`, `.deleteSite`, (e) => {
+        e.stopPropagation()
+        let result = window.confirm(`是否确认删除 ${site.siteName} ？`)
+        if (result) {
+            hashMap.splice(index, 1)
+            render()
+        }
+    })
+}
 //渲染收藏列表函数
 let render = () => {
     $(`.siteList`).find(`li:not(.addLi)`).remove()
 
-    hashMap.forEach(site => {
+    hashMap.forEach((site, index) => {
         if (site.siteIconsType === `link`) {
             const $li = $(`<li>
             <div class="siteItem">
@@ -71,12 +84,7 @@ let render = () => {
                 <div class="siteLink">${site.siteName}</div>
             </div>
             </li>`).insertBefore($siteListEnd)
-            $(`.siteList li`).on(`click`, ()=> {
-                window.open(site.siteLink)
-            }).on(`click`, `.deleteSite` , (e)=> {
-                console.log(`删除被点击了`)
-                e.stopPropagation()
-            })
+            addEvent($li, site, index)
         } else if (site.siteIconsType === `text`) {
             const $li = $(`<li>
             <div class="siteItem">
@@ -90,13 +98,7 @@ let render = () => {
                 <div class="siteLink">${site.siteName}</div>
             </div>
             </li>`).insertBefore($siteListEnd)
-            $(`.siteList li`).on(`click`, ()=> {
-                window.open(site.siteLink)
-            })
-            $(`.siteList li`).on(`click`, `.deleteSite` , (e)=> {
-                console.log(`删除被点击了`)
-                e.stopPropagation()
-            })
+            addEvent($li, site, index)
         }
     })
     completeLi()
@@ -105,7 +107,7 @@ let render = () => {
 //获取 form 表单中 sitIconType 的值
 let siteIconsType = () => {
     let radio = $("input[name = \"siteIconsType\"]")
-    for (let i=0; i<radio.length; i++) {
+    for (let i = 0; i < radio.length; i ++) {
         if (radio[i].checked) {
             return radio[i].value
         }
@@ -121,42 +123,41 @@ let openForm = () => {
 
 //form 表单关闭事件
 let closeForm = () => {
-        $addSiteForm.css(`opacity`, `0`)
-        $addSiteForm.css(`transform`, `translateY(-100%)`)
-        $mask.css(`display`, 'none')
-        $(`.siteIconLink`).css(`display`, `flex`)
-        document.querySelector(`.addSiteForm`).reset()
+    $addSiteForm.css(`opacity`, `0`)
+    $addSiteForm.css(`transform`, `translateY(-100%)`)
+    $mask.css(`display`, 'none')
+    $(`.siteIconLink`).css(`display`, `flex`)
+    document.querySelector(`.addSiteForm`).reset()
 }
 
 //未填写完整弹窗提示
-let popFailed = () => {
-    $popFailed.html(`填完才能创建快捷方式哦～`)
+let popFailed = (message) => {
+    $popFailed.html(message)
     $popFailed.css(`opacity`, `1`)
     $popFailed.css(`transform`, `translateY(0)`)
-    setTimeout(()=>{
+    setTimeout(() => {
         $popFailed.css(`opacity`, `0`)
         $popFailed.css(`transform`, `translateY(-100%)`)
-    },2000)
+    }, 2000)
 }
 
 //添加成功弹窗提示
 let popSuccess = () => {
     $popSuccess.css(`opacity`, `1`)
     $popSuccess.css(`transform`, `translateY(0)`)
-    setTimeout(()=>{
+    setTimeout(() => {
         $popSuccess.css(`opacity`, `0`)
         $popSuccess.css(`transform`, `translateY(-100%)`)
-    },3000)
+    }, 3000)
 }
 
-let popSiteKeyOut = () => {
-    $popFailed.html(`快捷键目前仅支持单个按键哦～`)
-    $popFailed.css(`opacity`, `1`)
-    $popFailed.css(`transform`, `translateY(0)`)
-    setTimeout(()=>{
-        $popFailed.css(`opacity`, `0`)
-        $popFailed.css(`transform`, `translateY(-100%)`)
-    },2000)
+//判断当前 siteKey 是否已存在
+let ifExist = (siteKey) => {
+    let siteKeys = []
+    for (let i = 0; i< hashMap.length;i++){
+        siteKeys.push(hashMap[i].siteKey.toLowerCase())
+    }
+    return siteKeys.includes(siteKey.toLowerCase())
 }
 
 //提交表单事件
@@ -166,50 +167,58 @@ let submitForm = () => {
     let siteKey = $("input[name = \"siteKey\"]").val()
     let siteIcon = $("input[name = \"siteIcon\"]").val()
 
-    if (siteIconsType() === `text`){
-        if (!siteName || !siteLink || !siteKey){
-            popFailed()
-        } else if ( siteName && siteLink && siteKey){
-            if (siteLink && siteLink.indexOf(`http`) !== 0) {
+    if (siteIconsType() === `text`) {
+        if (!siteName || !siteLink || !siteKey) {
+            popFailed(`填写完整才能创建收藏哦～`)
+        } else if (siteName && siteLink && siteKey) {
+            if (siteLink.indexOf(`http`) !== 0) {
                 siteLink = `https://` + siteLink
             }
 
             if (siteKey.length > 1) {
-                popSiteKeyOut()
-            }else if (siteKey.length === 1){
-                hashMap.push({
-                    siteName: siteName,
-                    siteIconsType: `text`,
-                    siteIcon: siteLink.replace(`https://`, ``).replace(`http://`, ``).replace(`www.`,``)[0],
-                    siteKey: siteKey,
-                    siteLink: siteLink
-                })
-                render()
-                closeForm()
-                popSuccess()
+                popFailed(`快捷键目前仅支持单个按键哦～`)
+            } else if (siteKey.length === 1) {
+                if (ifExist(siteKey)){
+                    popFailed(`快捷键已被占用～`)
+                }else{
+                    hashMap.push({
+                        siteName: siteName,
+                        siteIconsType: `text`,
+                        siteIcon: siteLink.replace(`https://`, ``).replace(`http://`, ``).replace(`www.`, ``)[0],
+                        siteKey: siteKey,
+                        siteLink: siteLink
+                    })
+                    render()
+                    closeForm()
+                    popSuccess()
+                }
             }
         }
-    } else if (siteIconsType() === `link`) {
-        if (!siteName || !siteLink || !siteIcon || !siteKey){
-            popFailed()
-        }else if (siteName && siteLink && siteIcon && siteKey){
-            if (siteLink && siteLink.indexOf(`http`) !== 0) {
+    }else if (siteIconsType() === `link`) {
+        if (!siteName || !siteLink || !siteIcon || !siteKey) {
+            popFailed(`填写完整才能创建收藏哦～`)
+        } else if (siteName && siteLink && siteIcon && siteKey) {
+            if (siteLink.indexOf(`http`) !== 0) {
                 siteLink = `https://` + siteLink
             }
 
             if (siteKey.length > 1) {
-                popSiteKeyOut()
-            }else if (siteKey.length === 1){
-                hashMap.push({
-                    siteName: siteName,
-                    siteIconsType: `link`,
-                    siteIcon: siteIcon,
-                    siteKey: siteKey,
-                    siteLink: siteLink
-                })
-                render()
-                closeForm()
-                popSuccess()
+                popFailed(`快捷键目前仅支持单个按键哦～`)
+            } else if (siteKey.length === 1) {
+                if (ifExist(siteKey)){
+                    popFailed(`快捷键已被占用～`)
+                }else{
+                    hashMap.push({
+                        siteName: siteName,
+                        siteIconsType: `link`,
+                        siteIcon: siteIcon,
+                        siteKey: siteKey,
+                        siteLink: siteLink
+                    })
+                    render()
+                    closeForm()
+                    popSuccess()
+                }
             }
         }
     }
@@ -218,6 +227,18 @@ let submitForm = () => {
 //进入页面时渲染列表并补全布局
 render()
 
+//监听键盘事件打开对应页面
+$(document).on(`keypress`, (e) => {
+    const {key} = e
+    for (let i = 0; i<hashMap.length;i++){
+        if (hashMap[i].siteKey.toLowerCase() === key){
+            window.open(hashMap[i].siteLink)
+        }
+    }
+}).on(`keypress`, `input:focus`, (e) => {
+    e.stopPropagation()
+})
+
 //点击新增打开表单
 $addSite
     .on(`click`, openForm)
@@ -225,12 +246,12 @@ $addSite
 //根据 siteIconType 的值改变 表单中 siteIcon 链接项的可见性
 $("input[name = \"siteIconsType\"]")
     .change(() => {
-    if (siteIconsType() === `link`){
-        $(`.siteIconLink`).css(`display`, `flex`)
-    }else {
-        $(`.siteIconLink`).css(`display`, `none`)
-    }
-})
+        if (siteIconsType() === `link`) {
+            $(`.siteIconLink`).css(`display`, `flex`)
+        } else {
+            $(`.siteIconLink`).css(`display`, `none`)
+        }
+    })
 
 //页面退出前保存数据至 localStorage
 window.onbeforeunload = () => {

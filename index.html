@@ -13,7 +13,7 @@
     <form action = "/index.html" class = "addSiteForm">
         <ul>
             <li>
-                <span class="formTitle">添加收藏</span>
+                <span class = "formTitle">添加收藏</span>
             </li>
             <li>
                 <span>网站名称：</span>
@@ -32,10 +32,9 @@
                 <div class = "iconsType">
                     <label for = "link">
                         <input type = "radio" id = "link" name = "siteIconsType" value = "link" checked>
-                        <span>logo链接</span></label>
-                    <label for = "text">
-                        <input type = "radio" id = "text" name = "siteIconsType" value = "text">
-                        <span>网址首字母</span></label>
+                        <span>logo链接</span></label> <label for = "text">
+                    <input type = "radio" id = "text" name = "siteIconsType" value = "text">
+                    <span>网址首字母</span></label>
                 </div>
             </li>
             <li class = "siteIconLink">
@@ -43,15 +42,14 @@
                 <input name = "siteIcon" type = "text" placeholder = "请输入网站 logo 图片地址" value = "">
             </li>
             <li>
-                <button class = "cancelAdd" name = "cancel" type = "button" onclick="closeForm()">取消</button>
-                <button class = "submitAdd" name = "submit" type = "button" onclick="submitForm()">确认添加</button>
+                <button class = "cancelAdd" name = "cancel" type = "button" onclick = "closeForm()">取消</button>
+                <button class = "submitAdd" name = "submit" type = "button" onclick = "submitForm()">确认添加</button>
             </li>
         </ul>
     </form>
-    <div class="popFailed"></div>
-    <div class="popSuccess">添加网址收藏成功！</div>
-    <div class="mask">
-    </div>
+    <div class = "popFailed"></div>
+    <div class = "popSuccess">添加网址收藏成功！</div>
+    <div class = "mask"></div>
     <div class = "logo"></div>
     <header class = "header">
         <form action = "https://www.google.com/search" class = "searchForm" method = "get">
@@ -79,8 +77,8 @@
         </p>
         <a target = "_blank" rel = "noopener" href = "http://beian.miit.gov.cn/">浙ICP备2021009729号</a>
     </footer>
-<!--    <script src = "src/jquery.min.js"></script>-->
-    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!--    <script src = "src/jquery.min.js"></script>-->
+    <script src = "https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src = "src/main.js"></script>
 </body>
 </html>
