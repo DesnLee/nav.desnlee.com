@@ -57,7 +57,7 @@ let completeLi = () => {
 let addEvent = (element, site, index) => {
     element.on(`click`, () => {
         window.open(site.siteLink)
-    }).on(`click`, `.deleteSite`, (e) => {
+    }).on(`click`, `#siteMore`, (e) => {
         e.stopPropagation()
         let result = window.confirm(`是否确认删除 ${site.siteName} ？`)
         if (result) {
@@ -75,9 +75,9 @@ let render = () => {
             const $li = $(`<li>
             <div class="siteItem">
                 <span class="tag">Press <strong>${site.siteKey}</strong> to open</span>
-                <div class="deleteSite">
-                <img src="src/img/icons/close.svg" alt="">
-                </div>
+                    <svg id="siteMore" class="icon" aria-hidden="true">
+                        <use xlink:href="#iconmore"></use>
+                    </svg>
                 <div class="siteIcon">
                     <img src = "${site.siteIcon}" alt = "">
                 </div>
@@ -88,10 +88,10 @@ let render = () => {
         } else if (site.siteIconsType === `text`) {
             const $li = $(`<li>
             <div class="siteItem">
-                <span class="tag">Press <strong>${site.siteKey}</strong> to open</span> 
-                <div class="deleteSite">
-                <img src="src/img/icons/close.svg" alt="">
-                </div>
+                <span class="tag">Press <strong>${site.siteKey}</strong> to open</span>
+                    <svg id="siteMore" class="icon" aria-hidden="true">
+                        <use xlink:href="#iconmore"></use>
+                    </svg>
                 <div class="siteIcon">
                     ${site.siteIcon}
                 </div>
@@ -118,6 +118,7 @@ let siteIconsType = () => {
 let openForm = () => {
     $addSiteForm.css(`opacity`, `1`)
     $addSiteForm.css(`transform`, `translateY(10%)`)
+    $addSiteForm.css(`display`, 'block')
     $mask.css(`display`, 'block')
 }
 
