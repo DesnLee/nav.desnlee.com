@@ -62,6 +62,9 @@ body {
 
 .header {
     max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .searchForm {
@@ -69,9 +72,8 @@ body {
     flex-direction: column;
 }
 
-.searchIcon {
-    width: 28px;
-    height: 28px;
+.searchForm svg {
+    font-size: 28px;
     margin: 14px 16px;
     position: absolute;
     align-self: flex-start;
@@ -386,6 +388,30 @@ body {
     font-weight: bold;
 }
 
+.searchTab {
+    max-width: 414px;
+    display: flex;
+    font-size: 12px;
+    color: #909399;
+    margin-bottom: 16px;
+    height: 32px;
+}
+.searchTab li{
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    padding: 6px 10px;
+    background: #fff;
+    border-radius: 36px;
+    transition: .3s;
+}
+
+.searchTab svg{
+    font-size: 0;
+    margin-right: 8px;
+    transition: .3s;
+}
+
 @media ( min-width: 800px) {
     .logo {
         margin-top: 64px;
@@ -458,5 +484,29 @@ body {
     #siteMore:hover{
         opacity: 1 !important;
         background-color: #C0C4CC55;
+    }
+
+    .searchTab li:hover{
+        color: rgb(66, 133, 244);
+    }
+
+    .searchTab {
+        max-width: 800px;
+        display: flex;
+        font-size: 14px;
+        color: #909399;
+        margin-bottom: 16px;
+        margin-top: 28px;
+    }
+    .searchTab li{
+        display: flex;
+        align-items: center;
+        flex-wrap: nowrap;
+        padding: 10px 24px;
+        background: #fff;
+        border-radius: 44px;
+        margin-right: 12px;
+        cursor: pointer;
+        transition: .3s;
     }
 }

@@ -48,12 +48,40 @@
         </ul>
     </form>
     <div class = "popFailed"></div>
-    <div class = "popSuccess">添加网址收藏成功！</div>
+    <div class = "popSuccess"></div>
     <div class = "mask"></div>
     <div class = "logo"></div>
     <header class = "header">
+        <ul class="searchTab">
+            <li class="google" id="searchGoogle" >
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icongoogle"></use>
+                </svg>
+                谷歌
+            </li>
+            <li class="baidu" id="searchBaidu">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#iconbaidu"></use>
+                </svg>
+                百度
+            </li>
+            <li class="bing" id="searchBing">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#iconbing"></use>
+                </svg>
+                必应
+            </li>
+            <li class="duckduckgo" id="searchDuckduckgo" >
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#iconduckduckgo"></use>
+                </svg>
+                DuckDuckGo
+            </li>
+        </ul>
         <form action = "https://www.google.com/search" class = "searchForm" method = "get">
-            <img id = "searchIcon" class = "searchIcon" src = "src/img/icons/google_search.svg" alt = "">
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icongoogle"></use>
+            </svg>
             <input name = "q" type = "text">
             <button type = "submit">搜索</button>
         </form>
@@ -79,7 +107,7 @@
     </footer>
     <!--    <script src = "src/jquery.min.js"></script>-->
     <script src = "https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="//at.alicdn.com/t/font_2532561_w42598pwh5b.js"></script>
+    <script src="//at.alicdn.com/t/font_2532561_hh7syn478zs.js"></script>
     <script src = "src/main.js"></script>
 </body>
 </html>

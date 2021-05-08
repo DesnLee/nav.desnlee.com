@@ -5,6 +5,10 @@ let $mask = $(`.mask`)
 let $popFailed = $(`.popFailed`)
 let $popSuccess = $(`.popSuccess`)
 let $addSite = $(`.addSite`)
+let $searchTab = $(`.searchTab`)
+let $searchForm = $(`.searchForm`)
+
+
 
 //localStorage 哈希表
 let hashMap = JSON.parse(localStorage.getItem(`siteCache`)) || [
@@ -53,7 +57,41 @@ let completeLi = () => {
     }
 }
 
-//给 li 添加点击跳转事件和删除事件，并且阻止删除按钮冒泡
+//初始化搜索引擎并添加点击事件
+let searchInit = (elements) => {
+    //初始化搜索引擎
+    $(`.google`).css(`background`, `#4285F433`).css(`color`, `#4285F4`).css(`font-weight`, `600`).find(`svg`).css(`font-size`, `20px`)
+    $searchForm.attr(`action`, `https://www.google.com/search`).find(`input`).attr(`name`, `q`).end().find(`use`).attr(`xlink:href`, `#icongoogle`)
+
+    //添加点击事件
+    elements.find(`li`).on(`click`, (e)=> {
+        let className = e.target.getAttribute(`class`)
+
+        //设置查询地址
+        if (className === `google`){
+            $searchForm.attr(`action`, `https://www.google.com/search`)
+            $searchForm.find(`input`).attr(`name`, `q`)
+        }else if (className === `baidu`){
+            $searchForm.attr(`action`, `https://www.baidu.com/s`)
+            $searchForm.find(`input`).attr(`name`, `wd`)
+        }else if (className === `bing`){
+            $searchForm.attr(`action`, `https://www.bing.com/search`)
+            $searchForm.find(`input`).attr(`name`, `q`)
+        }else if (className === `duckduckgo`){
+            $searchForm.attr(`action`, `https://duckduckgo.com/`)
+            $searchForm.find(`input`).attr(`name`, `q`)
+        }
+
+        //清除当前样式
+        $searchTab.find(`li`).attr(`style`, ``).css(`font-weight`, `600`).find(`svg`).css(`font-size`, `0`)
+        //添加点击样式
+        $(`.${className}`).css(`background`, `#4285F433`).css(`color`, `#4285F4`).find(`svg`).css(`font-size`, `20px`)
+        //修改 input 内 icon
+        $searchForm.find(`use`).attr(`xlink:href`, `#icon${className}`)
+    })
+}
+
+//给 收藏列表li 添加点击跳转事件和删除事件，并且阻止删除按钮冒泡
 let addEvent = (element, site, index) => {
     element.on(`click`, () => {
         window.open(site.siteLink)
@@ -101,6 +139,7 @@ let render = () => {
             addEvent($li, site, index)
         }
     })
+    searchInit($(`.searchTab`))
     completeLi()
 }
 
@@ -143,7 +182,8 @@ let popFailed = (message) => {
 }
 
 //添加成功弹窗提示
-let popSuccess = () => {
+let popSuccess = (message) => {
+    $popSuccess.html(message)
     $popSuccess.css(`opacity`, `1`)
     $popSuccess.css(`transform`, `translateY(0)`)
     setTimeout(() => {
@@ -191,7 +231,7 @@ let submitForm = () => {
                     })
                     render()
                     closeForm()
-                    popSuccess()
+                    popSuccess(`添加网址收藏成功！`)
                 }
             }
         }
@@ -218,7 +258,7 @@ let submitForm = () => {
                     })
                     render()
                     closeForm()
-                    popSuccess()
+                    popSuccess(`添加网址收藏成功！`)
                 }
             }
         }
